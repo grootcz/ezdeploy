@@ -310,7 +310,7 @@ docker run -d \
 -v $hostVolumeDataPath:$containerDataPath \
 -v $hostVolumeConfigPath:$containerConfigPath \
 -v $hostVolumeLogPath:$containerLogPath \
---restart always --name mysql_8 mysql:8.0.36
+--restart always --name mysql_1 mysql:8.0.36
 
 
 
