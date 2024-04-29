@@ -294,23 +294,21 @@ chmod -R 777 $hostVolumeLogPath
 
 Green "finished init host variables"
 
-containerConfigPath="/etc/mysql/conf.d"
-containerDataPath="/var/lib/mysql"
-containerLogPath="/var/lib/mysql_log"
+containerConfigPath="/usr/local/etc/redis"
+containerDataPath="/data"
+containerLogPath="/var/lib/redis_log"
 
 Green "finished init container variables"
 
-MysqlRootPw="YourMysqlRootPassword"
-Yellow "please make sure that mysql root password has modify to what you want"
-Green "finished init container variables"
+Yellow "please make sure that redis.conf requirepass and logfile has modify to what you want"
 
 docker run -d \
--p 22306:3306 -p 22307:33060 \
+-p 26379:6379 \
 -e MYSQL_ROOT_PASSWORD=$MysqlRootPw \
 -v $hostVolumeDataPath:$containerDataPath \
 -v $hostVolumeConfigPath:$containerConfigPath \
 -v $hostVolumeLogPath:$containerLogPath \
---restart always --name mysql_1 mysql:8.0.36
+--restart always --name redis_7 redis:7.0.11 redis-server /usr/local/etc/redis/redis.conf
 
 
 
