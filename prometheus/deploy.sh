@@ -284,30 +284,31 @@ Green "now work at "$hostRootPath
 
 hostVolumeConfigPath="$hostRootPath/conf"
 hostVolumeDataPath="$hostRootPath/data"
-hostVolumeLogPath="$hostRootPath/log"
 
 IsDirExist "$hostVolumeDataPath"
 chmod -R 777 $hostVolumeDataPath
 
-IsDirExist "$hostVolumeLogPath"
-chmod -R 777 $hostVolumeLogPath
-
 Green "finished init host variables"
 
-containerConfigPath="/usr/local/etc/redis"
+containerConfigPath="/etc/prometheus"
 containerDataPath="/data"
-containerLogPath="/var/lib/redis_log"
 
 Green "finished init container variables"
 
-Yellow "please make sure that redis.conf requirepass and logfile has modify to what you want"
-
 docker run -d \
--p 26379:6379 \
+-p 29090:9090 \
 -v $hostVolumeDataPath:$containerDataPath \
 -v $hostVolumeConfigPath:$containerConfigPath \
--v $hostVolumeLogPath:$containerLogPath \
---restart always --name redis_7 redis:7.0.11 redis-server /usr/local/etc/redis/redis.conf
+--restart always --name prometheus_1 prom/prometheus:v2.51.2 \
+--config.file=/etc/prometheus/prometheus.yml \
+--storage.tsdb.path=/data \
+--web.console.libraries=/usr/share/prometheus/console_libraries \
+--web.console.templates=/usr/share/prometheus/consoles \
+--web.enable-lifecycle \
+--enable-feature=remote-write-receiver
+
+
+                
 
 
 
